@@ -32,14 +32,23 @@ namespace TARSGabrielMoraraRibeiro.Controllers
                         return Json(passswordEncrypt);
                     }
 
-                    return Json("Cpf ou senha invalidas!", HttpStatusCode.BadRequest);
+                    return new JsonResult("CPF ou senha invalida.")
+                    {
+                        StatusCode = (int)HttpStatusCode.BadRequest
+                    };
                 }
 
-                return Json("Usuario nao encontrado, cadastre-se para logar", HttpStatusCode.BadRequest);
+                return new JsonResult("Usuário não encontrado, crie uma conta para continuar.")
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
             }
             catch (Exception e)
             {
-                return Json("Houve um erro interno, já estamos verificando!", HttpStatusCode.InternalServerError);
+                return new JsonResult("Houve um erro interno, já estamos verificando.")
+                {
+                    StatusCode = (int)HttpStatusCode.InternalServerError
+                };
             }
         }
 

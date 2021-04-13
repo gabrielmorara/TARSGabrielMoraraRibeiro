@@ -6,7 +6,6 @@
 <script src="~/colorlib-wizard-28/js/global.js"></script>
 <script src="~/js/select2.full.min.js"></script>
 
-
 <!-- Vendor JS-->
 <script src="~/colorlib-wizard-28/vendor/jquery-validate/jquery.validate.min.js"></script>
 
@@ -86,7 +85,12 @@
 
                             <div class="form-group">
                                 <label for="category">Categoria </label>
-                                <select id="category" name="category" data-bind="options: category, optionsCaption: 'Choose...'" style="width: 50%"></select>
+                                <select id="category" name="category"
+                                        data-bind="options: category,
+                                        optionsText: 'name',
+                                        optionsValue: 'id',
+                                        optionsCaption: 'Selecione uma categoria...',
+                                        value: selectedCategory" style="width: 50%"></select>
                             </div>
 
                             <br />
@@ -171,7 +175,7 @@
 
                             <div class="btn-next-con">
                                 <a class="btn-back" href="#">Voltar</a>
-                                <a class="btn-last" href="#">Cadastrar</a>
+                                <a class="btn-last" href="#" data-bind="click:createProduct">Cadastrar</a>
                             </div>
                         </div>
                     </div>
@@ -289,6 +293,12 @@
         });
     });
 
+    function CategoryType(item) {
+        this.id = ko.observable(item.categoryID);
+        this.name = ko.observable(item.name);
+    };
+
+
     function ViewModel() {
         try {
 
@@ -296,7 +306,10 @@
 
             self.title = ko.observable("");
             self.brand = ko.observable("");
+
             self.category = ko.observableArray([]);
+            self.selectedCategory = ko.observable("");
+
             self.stock = ko.observable([]);
             self.priceDefault = ko.observable([]);
             self.priceOffer = ko.observable([]);
@@ -317,7 +330,8 @@
                 success: function (response) {
                     console.log(response);
                     $.map(response, function (item) {
-                        self.category.push(item.name);
+                        self.category.push(new CategoryType(item));
+                        console.log(self.category());
                     });
                 },
                 error: function (response) {
@@ -327,20 +341,20 @@
 
             self.createProduct = () => {
                 var data = {
-                    title: self.title(),
-                    brand: self.brand(),
-                    category: self.category(),
-                    stock: self.stock(),
-                    priceDefault: self.priceDefault(),
-                    priceOffer: self.priceOffer(),
-                    description: self.description(),
-                    ean: self.ean(),
-                    ncm: self.ncm(),
-                    warranty: self.warranty(),
-                    height: self.height(),
-                    lenght: self.lenght(),
-                    width: self.width(),
-                    weight: self.weight(),
+                    Title: self.title(),
+                    Brand: self.brand(),
+                    CategoryID: self.selectedCategory(),
+                    Stock: self.stock(),
+                    PriceDefault: self.priceDefault(),
+                    PriceOffer: self.priceOffer(),
+                    Description: self.description(),
+                    EAN: self.ean(),
+                    NCM: self.ncm(),
+                    Warranty: self.warranty(),
+                    Height: self.height(),
+                    Lenght: self.lenght(),
+                    Width: self.width(),
+                    Weight: self.weight(),
                 };
 
                 console.log(data);
@@ -349,10 +363,12 @@
                     type: "POST",
                     url: '/Products/CreatedProduct',
                     data: {
-                        data: data
+                        data: JSON.stringify(data)
                     },
                     success: function (response) {
                         console.log(response);
+                        alert("Produto cadastrado com sucesso!");
+
                     },
                     error: function (response) {
                         console.log('Erro' + response);

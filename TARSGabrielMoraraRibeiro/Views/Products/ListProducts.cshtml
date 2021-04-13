@@ -1,0 +1,52 @@
+﻿<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+
+<table id="example" cellspacing="0" class="table table-striped table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th scope="col">Titulo</th>
+            <th scope="col">Marca</th>
+            <th scope="col">Estoque</th>
+            <th scope="col">Preço Por</th>
+            <th scope="col">Detalhes</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: Products">
+        <tr>
+            <td data-bind="text: title"></td>
+            <td data-bind="text: brand"></td>
+            <td data-bind="text: stock"></td>
+            <td data-bind="text: priceOffer"></td>
+            <td><a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a></td>
+        </tr>
+    </tbody>
+</table>
+<script>
+
+    var ViewModel = function (jsonData) {
+        var products = ko.utils.arrayMap(jsonData, function (item) {
+            return new Product(item)
+        });
+
+        this.Products = ko.observableArray(products);
+    };
+
+    var Product = function (jsonItem) {
+        this.title = ko.observable(jsonItem.title);
+        this.brand = ko.observable(jsonItem.brand);
+        this.stock = ko.observable(jsonItem.stock);
+        this.priceOffer = ko.observable(jsonItem.priceOffer);
+        this.productID = ko.observable(jsonItem.productID);
+    };
+
+    window.onload = function () {
+        $.getJSON('/Products/GetProducts', function (data) {
+            console.log(data);
+            ko.applyBindings(new ViewModel(data));
+            $("#example").DataTable({
+                select: true,
+                searching: true
+            });
+        });
+    }
+</script>

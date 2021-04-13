@@ -26,7 +26,11 @@ namespace DataBaseTars
             try
             {
                 var user = GetUserByCPF(cpf);
-                return user.Password_hash.Equals(token);
+                if (user != null)
+                {
+                    return user.Password_hash.Equals(token);
+                }
+                return false;
             }
             catch (Exception)
             {

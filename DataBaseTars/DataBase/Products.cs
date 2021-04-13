@@ -8,15 +8,27 @@ namespace DataBaseTars.DataBase
 {
     public class Products
     {
-        public long ProductID { get; internal set; }
-        public long CategoryID { get; internal set; }
-        public long UserID { get; internal set; }
-        public string Title { get; internal set; }
-        public string Brand { get; internal set; }
-        public DateTime? Created_at { get; internal set; }
-        public DateTime? Updated_at { get; internal set; }
-        public DateTime? Deleted_at { get; internal set; }
+        public long ProductID { get; set; }
+        public long CategoryID { get; set; }
+        public long UserID { get; set; }
+        public string Title { get; set; }
+        public string Brand { get; set; }
+        public string Description { get; set; }
+        public string ean { get; set; }
+        public string ncm { get; set; }
+        public int Stock { get; set; }
+        public int Warranty { get; set; }
+        public decimal PriceDefault { get; set; }
+        public decimal PriceOffer { get; set; }
+        public decimal Height { get; set; }
+        public decimal Lenght { get; set; }
+        public decimal Width { get; set; }
+        public decimal Weight { get; set; }
+        public DateTime? Created_at { get; set; }
+        public DateTime? Updated_at { get; set; }
+        public DateTime? Deleted_at { get; set; }
     }
+
     public class ProductsConfiguration : IEntityTypeConfiguration<Products>
     {
         public void Configure(EntityTypeBuilder<Products> builder)

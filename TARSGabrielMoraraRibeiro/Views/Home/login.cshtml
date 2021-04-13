@@ -41,9 +41,16 @@
                             <span>Senha: </span>
                             <input type="password" class="form-control" data-bind="value: password">
                         </div>
+
+                        <span id="error" class="error" style="color: red;" data-bind="text: errorMsg"></span>
+
+                        <br />
+
                         <div class="form-group">
-                            <div class="row align-items-center">
-                                <button class="btn btn-primary" data-bind="click: authenticateUser">Entrar</button>
+                            <div class="center">
+                                <button style="width: 50%" type="button" class="btn btn-success" data-bind="click: authenticateUser">
+                                    <span class="glyphicon glyphicon glyphicon-floppy-disk" aria-hidden="true"><b>Entrar</b></span>
+                                </button>
                             </div>
                             <br />
                             <div>
@@ -70,6 +77,7 @@
 
             self.cpf = ko.observable("");
             self.password = ko.observable("");
+            self.errorMsg = ko.observable("");
 
             self.authenticateUser = () => {
                 $.ajax({
@@ -85,8 +93,8 @@
                         setCookie('UserToken', response);
                         window.location.href = '/Home/Index';
                     },
-                    error: function (response) {
-                        console.log('Erro' + response);
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        self.errorMsg(JSON.parse(xhr.responseText));
                     }
                 });
             }
