@@ -17,11 +17,12 @@
             <td data-bind="text: brand"></td>
             <td data-bind="text: stock"></td>
             <td data-bind="text: priceOffer"></td>
-            <td><a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a></td>
+            <td><a class="edit" title="Edit" data-toggle="tooltip" data-bind="attr: { href: edit}"><i class="material-icons">&#xE254;</i></a></td>
         </tr>
     </tbody>
 </table>
-<script>
+
+<script type="text/javascript">
 
     var ViewModel = function (jsonData) {
         var products = ko.utils.arrayMap(jsonData, function (item) {
@@ -36,7 +37,7 @@
         this.brand = ko.observable(jsonItem.brand);
         this.stock = ko.observable(jsonItem.stock);
         this.priceOffer = ko.observable(jsonItem.priceOffer);
-        this.productID = ko.observable(jsonItem.productID);
+        this.edit = ko.observable("/Products/EditProduct?productID=" + jsonItem.productID);
     };
 
     window.onload = function () {

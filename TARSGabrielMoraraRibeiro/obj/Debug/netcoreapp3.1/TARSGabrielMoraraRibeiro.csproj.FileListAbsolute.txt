@@ -190,4 +190,4 @@ C:\Users\gabri\Desktop\PROJETOS\Tars\TARSGabrielMoraraRibeiro\TARSGabrielMoraraR
 C:\Users\gabri\Desktop\PROJETOS\Tars\TARSGabrielMoraraRibeiro\TARSGabrielMoraraRibeiro\obj\Debug\netcoreapp3.1\TARSGabrielMoraraRibeiro.pdb
 C:\Users\gabri\Desktop\PROJETOS\Tars\TARSGabrielMoraraRibeiro\TARSGabrielMoraraRibeiro\obj\Debug\netcoreapp3.1\TARSGabrielMoraraRibeiro.genruntimeconfig.cache
 C:\Users\gabri\Desktop\PROJETOS\Tars\TARSGabrielMoraraRibeiro\TARSGabrielMoraraRibeiro\obj\Debug\netcoreapp3.1\Razor\Views\Products\ListProducts.cshtml.g.cs
-C:\Users\gabri\Desktop\PROJETOS\Tars\TARSGabrielMoraraRibeiro\TARSGabrielMoraraRibeiro\obj\Debug\netcoreapp3.1\Razor\Views\Products\EditlProduct.cshtml.g.cs
+C:\Users\gabri\Desktop\PROJETOS\Tars\TARSGabrielMoraraRibeiro\TARSGabrielMoraraRibeiro\obj\Debug\netcoreapp3.1\Razor\Views\Products\EditProduct.cshtml.g.cs

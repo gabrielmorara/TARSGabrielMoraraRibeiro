@@ -1,0 +1,335 @@
+﻿<link href="~/colorlib-wizard-28/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+<link href="~/colorlib-wizard-28/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+<link href="~/colorlib-wizard-28/css/main.css" rel="stylesheet" media="all">
+<link href="~/css/select2.min.css" rel="stylesheet" media="all">
+<script src="~/colorlib-wizard-28/vendor/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+<script src="~/colorlib-wizard-28/js/global.js"></script>
+<script src="~/js/select2.full.min.js"></script>
+<script src="~/colorlib-wizard-28/vendor/jquery-validate/jquery.validate.min.js"></script>
+
+<style>
+    .error {
+        color: red;
+    }
+
+    label {
+        font-weight: bold
+    }
+
+    #containerForm {
+        margin-right: 0px
+    }
+
+    .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .progress-val {
+        background-color: #36c240;
+    }
+</style>
+<!-- Navigation -->
+@Html.Partial("_Navigation")
+
+<div class="page-wrapper" style="border-color: #28BAA2;
+        padding-bottom: 100px;">
+    <div class="wrapper wrapper">
+        <div class="card card-1">
+            <div class="card-body">
+                <h1 class="center">Edição de produto</h1>
+                <br />
+                <form class="wizard-container" method="POST" action="#" id="js-wizard-form">
+                    <div class="progress" id="js-progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
+                            <span class="progress-val">40%</span>
+                        </div>
+                    </div>
+
+                    <ul class="nav nav-tab">
+                        <li class="active">
+                            <a href="#tab1" data-toggle="tab">1</a>
+                        </li>
+                        <li>
+                            <a href="#tab2" data-toggle="tab">1</a>
+                        </li>
+                        <li>
+                            <a href="#tab3" data-toggle="tab">1</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab1">
+
+                            <h3 class="font-bold p-h-xs m-b-md m-t-lg" style="border-bottom:1px #d0d0d0 solid;">Informações gerais</h3>
+                            <br />
+
+                            <div class="form-group">
+                                <label for="title">Titulo</label>
+                                <input type="text" id="title" name="title" class="form-control" data-bind="value: title" />
+                                <span data-bind='visible: title.hasError, text: title.validationMessage'> </span>
+                            </div>
+
+                            <br />
+
+                            <div class="form-group">
+                                <label for="brand">Marca</label>
+                                <input type="text" id="brand" name="brand" class="form-control" data-bind="value: brand" />
+                                <span data-bind='visible: brand.hasError, text: brand.validationMessage'> </span>
+                            </div>
+
+                            <br />
+
+                            <div class="form-group">
+                                <label for="category">Categoria </label>
+                                <select id="category" name="category"
+                                        data-bind="
+                                        options: category,
+                                        optionsText: 'name',
+                                        optionsValue: 'id',
+                                        value: selectedCategory" style="width: 50%"></select>
+                            </div>
+
+                            <br />
+
+                            <div class="row align-content-between">
+                                <div class="col-md-2 p-xss">
+                                    <label for="priceDefault">Preço De</label>
+                                    <input type="number" id="priceDefault" name="priceDefault" class="form-control" data-bind="value:priceDefault" />
+                                </div>
+
+                                <div class="col-md-2 p-xss">
+                                    <label for="priceOffer">Preço Por</label>
+                                    <input type="number" id="priceOffer" name="priceOffer" class="form-control" data-bind="value:priceOffer" />
+                                </div>
+
+                                <div class="col-md-2 p-xss">
+                                    <label for="stock">Estoque</label>
+                                    <input type="number" id="stock" name="stock" class="form-control" data-bind="value:stock" />
+                                </div>
+                            </div>
+
+                            <br />
+
+                            <div class="form-group">
+                                <label for="description">Descricao</label>
+                                <textarea type="text" id="description" name="description" class="form-control" data-bind="value:description"></textarea>
+                            </div>
+
+                            <div class="btn-next-con">
+                                <a class="btn-next" href="#">Próximo</a>
+                            </div>
+
+                        </div>
+                        <div class="tab-pane" id="tab2">
+                            <h3 class="font-bold p-h-xs m-b-md m-t-lg" style="border-bottom:1px #d0d0d0 solid;">Informações fiscais</h3>
+                            <br />
+
+                            <div class="form-group">
+                                <label for="ean">EAN</label>
+                                <input type="number" id="ean" name="ean" class="form-control" data-bind="value:ean" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ncm">NCM</label>
+                                <input type="number" id="ncm" name="ncm" class="form-control" data-bind="value:ncm" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="warranty">Garantia</label>
+                                <input type="number" id="warranty" name="warranty" class="form-control" data-bind="value:warranty" />
+                            </div>
+
+                            <div class="btn-next-con">
+                                <a class="btn-back" href="#">Voltar</a>
+                                <a class="btn-next" href="#">Próximo</a>
+                            </div>
+
+                        </div>
+                        <div class="tab-pane" id="tab3">
+                            <h3 class="font-bold p-h-xs m-b-md m-t-lg" style="border-bottom:1px #d0d0d0 solid;">Medidas</h3>
+                            <br />
+
+                            <div class="form-group">
+                                <label for="height">Altura</label>
+                                <input type="number" id="height" name="height" class="form-control" data-bind="value:height" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="lenght">Comprimento</label>
+                                <input type="number" id="lenght" name="lenght" class="form-control" data-bind="value:lenght" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="width">Largura</label>
+                                <input type="number" id="width" name="width" class="form-control" data-bind="value:width" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="weight">Peso</label>
+                                <input type="number" id="weight" name="weight" class="form-control" data-bind="value:weight" />
+                            </div>
+
+                            <div class="btn-next-con">
+                                <a class="btn-back" href="#">Voltar</a>
+                                <a class="btn-last" href="#" data-bind="click:updateProduct">Salvar</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var productID = GetParameter();
+
+    $('#category').select2({
+        theme: "classic",
+        allowClear: false
+    });
+
+    //Controla Progress Bar
+    $("#js-wizard-form").bootstrapWizard({
+        'tabClass': 'nav-tab',
+        'nextSelector': '.btn-next',
+        'previousSelector': '.btn-back',
+        'lastSelector': '.btn-last',
+        'onNext': function (tab, navigation, index) {
+            var progressBar = $('#js-progress').find('.progress-bar');
+            var progressVal = $('#js-progress').find('.progress-val');
+            var current = index + 1;
+            if (current > 1) {
+                var val = parseInt(progressBar.text());
+                val += 30;
+                progressBar.css('width', val + '%');
+                progressVal.text(val + '%');
+            }
+
+        },
+        'onPrevious': function (tab, navigation, index) {
+            var progressBar = $('#js-progress').find('.progress-bar');
+            var progressVal = $('#js-progress').find('.progress-val');
+            var current = index - 1;
+            if (current !== 1) {
+                var val = parseInt(progressBar.text());
+                val -= 30;
+                progressBar.css('width', val + '%');
+                progressVal.text(val + '%');
+            }
+        }
+    });
+
+    function GetParameter() {
+        var _myUrl = window.location.search.substring(1).split('&');
+        var _collection = _myUrl[0].split('=');
+        return _collection[1];
+    }
+
+    function CategoryType(item) {
+        this.id = ko.observable(item.categoryID);
+        this.name = ko.observable(item.name);
+    };
+
+    $(document).ready(function () {
+        $.getJSON('/Products/GetProductByID?productID=' + productID, function (data) {
+            var vm = new ViewModel(data);
+
+            // ativa knockout.js
+            ko.applyBindings(vm);
+        });
+    });
+
+    function ViewModel(data) {
+        try {
+
+            var self = this;
+
+            self.category = ko.observableArray([]);
+            self.selectedCategory = ko.observable(data.categoryID);
+
+            $.ajax({
+                type: "GET",
+                url: '/Category/ListCategorys',
+                success: function (response) {
+                    console.log(response);
+                    $.map(response, function (item) {
+                        self.category.push(new CategoryType(item));
+                    });
+                    $('#category').val(data.categoryID).change();
+                },
+                error: function (response) {
+                    console.log('Erro' + response);
+                }
+            });
+
+            self.title = ko.observable(data.title);
+            self.brand = ko.observable(data.brand);
+
+
+            self.stock = ko.observable(data.stock);
+            self.priceDefault = ko.observable(data.priceDefault);
+            self.priceOffer = ko.observable(data.priceOffer);
+            self.description = ko.observable(data.description);
+
+            self.ean = ko.observable(data.ean);
+            self.ncm = ko.observable(data.ncm);
+            self.warranty = ko.observable(data.warranty);
+
+            self.height = ko.observable(data.height);
+            self.lenght = ko.observable(data.lenght);
+            self.width = ko.observable(data.width);
+            self.weight = ko.observable(data.weight);
+
+            self.updateProduct = () => {
+                var data = {
+                    Title: self.title(),
+                    Brand: self.brand(),
+                    CategoryID: self.selectedCategory(),
+                    Stock: self.stock(),
+                    PriceDefault: self.priceDefault(),
+                    PriceOffer: self.priceOffer(),
+                    Description: self.description(),
+                    EAN: self.ean(),
+                    NCM: self.ncm(),
+                    Warranty: self.warranty(),
+                    Height: self.height(),
+                    Lenght: self.lenght(),
+                    Width: self.width(),
+                    Weight: self.weight(),
+                };
+
+                console.log(data);
+
+                $.ajax({
+                    type: "PUT",
+                    url: '/Products/UpdateProduct',
+                    data: {
+                        productID: productID,
+                        data: JSON.stringify(data)
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'OK',
+                            text: 'Produto alterado com sucesso!'
+                        });
+                        setTimeout(function () {
+                            window.location.href = '/ListProducts';
+                        }, 2500);
+                    },
+                    error: function (response) {
+                        console.log('Erro' + response);
+                    }
+                });
+            }
+
+        } catch (e) {
+            console.log(e);
+        }
+    }
+</script>
