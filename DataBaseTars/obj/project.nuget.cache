@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "/NXdab5MQse/SSV7l7/fLTJ4Xc1ya2yhNxTZhAFWFpJAxBotRJc84N/U4wH+tZz+PMVzU0VShSf5AV3pISYVjw==",
+  "dgSpecHash": "5bxJFPfr/bLZt2BwLSS5fKU7B2RRFf7DNQgt4CPLNF/N9sYXwJ1CQMX0C1DjgLNGx5EvUvKhSZTkB8aGFbK7kA==",
   "success": true,
   "projectFilePath": "C:\\Users\\gabri\\Desktop\\PROJETOS\\Tars\\TARSGabrielMoraraRibeiro\\DataBaseTars\\DataBaseTars.csproj",
   "expectedPackageFiles": [
@@ -23,6 +23,7 @@
     "C:\\Users\\gabri\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
+    "C:\\Users\\gabri\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\npgsql\\5.0.4\\npgsql.5.0.4.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\5.0.2\\npgsql.entityframeworkcore.postgresql.5.0.2.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\runtime.native.system.data.sqlclient.sni\\4.7.0\\runtime.native.system.data.sqlclient.sni.4.7.0.nupkg.sha512",

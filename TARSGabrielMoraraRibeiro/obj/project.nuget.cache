@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "d5C3xSlm2scjRhinMK/ghVgWQ5ThX0zRe/RPU7PVrS3Ydhbfmky/8Dwsdw8vr7CywiJ98SbxzOuqMloC00PziA==",
+  "dgSpecHash": "NhvmCvkktv9Y9RutPZQVL30SDxQhHJmFjrYuSItabkofLLINGwB0Fc+AtPzda+XZ+5zB38O/3SQEVQrX5PBXbg==",
   "success": true,
   "projectFilePath": "C:\\Users\\gabri\\Desktop\\PROJETOS\\Tars\\TARSGabrielMoraraRibeiro\\TARSGabrielMoraraRibeiro\\TARSGabrielMoraraRibeiro.csproj",
   "expectedPackageFiles": [
@@ -64,7 +64,7 @@
     "C:\\Users\\gabri\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
-    "C:\\Users\\gabri\\.nuget\\packages\\newtonsoft.json\\11.0.2\\newtonsoft.json.11.0.2.nupkg.sha512",
+    "C:\\Users\\gabri\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\npgsql\\5.0.4\\npgsql.5.0.4.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\5.0.2\\npgsql.entityframeworkcore.postgresql.5.0.2.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\nuget.frameworks\\4.7.0\\nuget.frameworks.4.7.0.nupkg.sha512",

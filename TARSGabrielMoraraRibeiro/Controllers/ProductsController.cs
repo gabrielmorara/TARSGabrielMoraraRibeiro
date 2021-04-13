@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using DataBaseTars.DataBase;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace TARSGabrielMoraraRibeiro.Controllers
 {
@@ -19,12 +21,15 @@ namespace TARSGabrielMoraraRibeiro.Controllers
             return ValidateUser();
         }
 
-        public JsonResult GetBrands()
+        public JsonResult CreatedProduct(string data)
         {
             try
             {
-                var brands = rep._context.Products.Select(s => s.Brand).ToList();
-                return Json(brands);
+                var newProduct = JsonConvert.DeserializeObject<Products>(data);
+                rep._context.Products.Add(newProduct);
+                rep._context.SaveChanges();
+
+                return Json("OK");
             }
             catch (Exception e)
             {

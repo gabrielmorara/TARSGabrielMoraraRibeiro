@@ -6,6 +6,10 @@
 <script src="~/colorlib-wizard-28/js/global.js"></script>
 <script src="~/js/select2.full.min.js"></script>
 
+
+<!-- Vendor JS-->
+<script src="~/colorlib-wizard-28/vendor/jquery-validate/jquery.validate.min.js"></script>
+
 <style>
     .error {
         color: red;
@@ -24,6 +28,10 @@
         justify-content: center;
         align-items: center;
     }
+
+    .progress-val {
+        background-color: #36c240;
+    }
 </style>
 <!-- Navigation -->
 @Html.Partial("_Navigation")
@@ -37,7 +45,7 @@
                 <br />
                 <form class="wizard-container" method="POST" action="#" id="js-wizard-form">
                     <div class="progress" id="js-progress">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
                             <span class="progress-val">40%</span>
                         </div>
                     </div>
@@ -83,20 +91,24 @@
 
                             <br />
 
-                            <div class="form-group">
-                                <label for="stock">Quantidade disponivel</label>
-                                <input type="number" id="stock" name="stock" class="form-control" data-bind="value:stock" />
+                            <div class="row align-content-between">
+                                <div class="col-md-2 p-xss">
+                                    <label for="priceDefault">Preço De</label>
+                                    <input type="number" id="priceDefault" name="priceDefault" class="form-control" data-bind="value:priceDefault" />
+                                </div>
+
+                                <div class="col-md-2 p-xss">
+                                    <label for="priceOffer">Preço Por</label>
+                                    <input type="number" id="priceOffer" name="priceOffer" class="form-control" data-bind="value:priceOffer" />
+                                </div>
+
+                                <div class="col-md-2 p-xss">
+                                    <label for="stock">Estoque</label>
+                                    <input type="number" id="stock" name="stock" class="form-control" data-bind="value:stock" />
+                                </div>
                             </div>
 
-                            <div class="form-group">
-                                <label for="priceDefault">Preço De</label>
-                                <input type="number" id="priceDefault" name="priceDefault" class="form-control" data-bind="value:priceDefault" />
-                            </div>
-
-                            <div class="form-group">
-                                <label for="priceOffer">Preço Por</label>
-                                <input type="number" id="priceOffer" name="priceOffer" class="form-control" data-bind="value:priceOffer" />
-                            </div>
+                            <br />
 
                             <div class="form-group">
                                 <label for="description">Descricao</label>
@@ -104,12 +116,13 @@
                             </div>
 
                             <div class="btn-next-con">
-                                <a class="btn-next" href="#">Next</a>
+                                <a class="btn-next" href="#">Próximo</a>
                             </div>
 
                         </div>
                         <div class="tab-pane" id="tab2">
-                            <h1>Informações fiscais</h1>
+                            <h3 class="font-bold p-h-xs m-b-md m-t-lg" style="border-bottom:1px #d0d0d0 solid;">Informações fiscais</h3>
+                            <br />
 
                             <div class="form-group">
                                 <label for="ean">EAN</label>
@@ -117,7 +130,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="ncm">Garantia</label>
+                                <label for="ncm">NCM</label>
                                 <input type="number" id="ncm" name="ncm" class="form-control" data-bind="value:ncm" />
                             </div>
 
@@ -127,13 +140,14 @@
                             </div>
 
                             <div class="btn-next-con">
-                                <a class="btn-back" href="#">back</a>
-                                <a class="btn-next" href="#">Next</a>
+                                <a class="btn-back" href="#">Voltar</a>
+                                <a class="btn-next" href="#">Próximo</a>
                             </div>
 
                         </div>
                         <div class="tab-pane" id="tab3">
-                            <h1>Medidas</h1>
+                            <h3 class="font-bold p-h-xs m-b-md m-t-lg" style="border-bottom:1px #d0d0d0 solid;">Medidas</h3>
+                            <br />
 
                             <div class="form-group">
                                 <label for="height">Altura</label>
@@ -156,8 +170,8 @@
                             </div>
 
                             <div class="btn-next-con">
-                                <a class="btn-back" href="#">back</a>
-                                <a class="btn-last" href="#">Submit</a>
+                                <a class="btn-back" href="#">Voltar</a>
+                                <a class="btn-last" href="#">Cadastrar</a>
                             </div>
                         </div>
                     </div>
@@ -173,6 +187,37 @@
         theme: "classic",
         placeholder: 'Selecione uma categoria...',
         allowClear: false
+    });
+
+    //Controla Progress Bar
+    $("#js-wizard-form").bootstrapWizard({
+        'tabClass': 'nav-tab',
+        'nextSelector': '.btn-next',
+        'previousSelector': '.btn-back',
+        'lastSelector': '.btn-last',
+        'onNext': function (tab, navigation, index) {
+            var progressBar = $('#js-progress').find('.progress-bar');
+            var progressVal = $('#js-progress').find('.progress-val');
+            var current = index + 1;
+            if (current > 1) {
+                var val = parseInt(progressBar.text());
+                val += 30;
+                progressBar.css('width', val + '%');
+                progressVal.text(val + '%');
+            }
+
+        },
+        'onPrevious': function (tab, navigation, index) {
+            var progressBar = $('#js-progress').find('.progress-bar');
+            var progressVal = $('#js-progress').find('.progress-val');
+            var current = index - 1;
+            if (current !== 1) {
+                var val = parseInt(progressBar.text());
+                val -= 30;
+                progressBar.css('width', val + '%');
+                progressVal.text(val + '%');
+            }
+        }
     });
 
     $(document).ready(function () {
@@ -197,6 +242,15 @@
                 },
                 description: {
                     required: true,
+                },
+                ean: {
+                    required: true,
+                },
+                ncm: {
+                    required: true,
+                },
+                warranty: {
+                    required: true,
                 }
             },
             messages: {
@@ -218,8 +272,18 @@
                 },
                 priceOffer: {
                     required: "Por favor informe o preço Por",
-                }, description: {
+                },
+                description: {
                     required: "Por favor informe a descrição",
+                },
+                ean: {
+                    required: "Por favor informe o EAN",
+                },
+                ncm: {
+                    required: "Por favor informe o NCM",
+                },
+                warranty: {
+                    required: "Por favor informe a tempo de garantia em messes",
                 }
             },
         });
@@ -231,15 +295,21 @@
             var self = this;
 
             self.title = ko.observable("");
-
             self.brand = ko.observable("");
             self.category = ko.observableArray([]);
-
             self.stock = ko.observable([]);
             self.priceDefault = ko.observable([]);
             self.priceOffer = ko.observable([]);
-
             self.description = ko.observable("");
+
+            self.ean = ko.observable("");
+            self.ncm = ko.observable("");
+            self.warranty = ko.observable("");
+
+            self.height = ko.observable("");
+            self.lenght = ko.observable("");
+            self.width = ko.observable("");
+            self.weight = ko.observable("");
 
             $.ajax({
                 type: "GET",
@@ -256,11 +326,30 @@
             });
 
             self.createProduct = () => {
+                var data = {
+                    title: self.title(),
+                    brand: self.brand(),
+                    category: self.category(),
+                    stock: self.stock(),
+                    priceDefault: self.priceDefault(),
+                    priceOffer: self.priceOffer(),
+                    description: self.description(),
+                    ean: self.ean(),
+                    ncm: self.ncm(),
+                    warranty: self.warranty(),
+                    height: self.height(),
+                    lenght: self.lenght(),
+                    width: self.width(),
+                    weight: self.weight(),
+                };
+
+                console.log(data);
+
                 $.ajax({
                     type: "POST",
-                    url: '/Users/RegisterUser',
+                    url: '/Products/CreatedProduct',
                     data: {
-                        data: ""
+                        data: data
                     },
                     success: function (response) {
                         console.log(response);
