@@ -21,6 +21,14 @@ namespace TARSGabrielMoraraRibeiro.Controllers
         {
             try
             {
+                if (cpf == null || password == null)
+                {
+                    return new JsonResult("Informe o CPF e a senha.")
+                    {
+                        StatusCode = (int)HttpStatusCode.BadRequest
+                    };
+                }
+
                 var isUser = rep.GetUserByCPF(cpf);
 
                 if (isUser != null)
