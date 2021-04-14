@@ -99,6 +99,25 @@ namespace TARSGabrielMoraraRibeiro.Controllers
             }
         }
 
+        public JsonResult DeleteProduct(string productID)
+        {
+            try
+            {
+                var product = rep._context.Products.FirstOrDefault(s => s.ProductID == Convert.ToInt64(productID));
+
+                rep._context.Products.Remove(product);
+
+                return Json("OK");
+            }
+            catch (Exception e)
+            {
+                return new JsonResult("Houve um erro interno, já estamos verificando.")
+                {
+                    StatusCode = (int)HttpStatusCode.InternalServerError
+                };
+            }
+        }
+
         public JsonResult GetProductByID(string productID)
         {
             try
