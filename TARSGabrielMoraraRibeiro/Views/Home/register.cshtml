@@ -2,6 +2,7 @@
 
     .error {
         color: red;
+        font-weight: bold;
     }
 
     label {
@@ -26,8 +27,13 @@
     }
 
     .container {
-        margin-right: 10%;
-        width: 100%
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        min-height: 100%;
+        padding: 20px;
     }
 
     .center {
@@ -45,7 +51,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="common_box_body panel-body">
                     <div class="center">
@@ -199,8 +205,14 @@
                         password: self.password()
                     },
                     success: function (response) {
-                        console.log(response);
-                        window.location.href = '/Home/login';
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'OK',
+                            text: 'Cadastrado com sucesso!'
+                        });
+                        setTimeout(function () {
+                            window.location.href = '/Home/login';
+                        }, 2500);
                     },
                     error: function (response) {
                         console.log('Erro' + response);
