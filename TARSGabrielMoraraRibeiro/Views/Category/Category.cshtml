@@ -1,32 +1,51 @@
 ﻿<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
 
-<div id="navigation" class="ibox-content" style="padding:unset;">
+<!-- Navigation -->
+@Html.Partial("_Navigation")
 
-    <!-- Navigation -->
-    @Html.Partial("_Navigation")
+<!-- Cadastro Categoria -->
+<div class="row">
+    <div class="col-4">
+        <label for="title">Nome: </label>
+        <input type="text" id="title" name="name" class="form-control" data-bind="value: name" />
+        <span data-bind='visible: name.hasError, text: name.validationMessage'> </span>
+    </div>
 
-    <table id="example" cellspacing="0" class="table table-striped table-bordered table-condensed">
-        <thead>
-            <tr>
-                <th scope="col">Nome</th>
-                <th scope="col">Quantidade de Produtos</th>
-                <th scope="col">Opções</th>
-            </tr>
-        </thead>
-        <tbody data-bind="foreach: features">
-            <tr>
-                <td data-bind="text: name"></td>
-                <td data-bind="text: qtdProducts"></td>
-                <td>
-                    <button class="delete" title="Delete" data-toggle="tooltip" data-bind="click: $root.deleteCategory"><i class="material-icons">&#xE872;</i></button>
-                    @*<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                        <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>*@
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="col-md" style="margin-top: 25px">
+        <button type="button" class="btn btn-info" data-bind="click: createdCategory"><i class="fa fa-plus"></i> Adicionar</button>
+    </div>
 </div>
+
+<br />
+
+<!-- Tabela Categoria -->
+<table id="table-categorys" cellspacing="0" class="table table-striped table-bordered table-condensed" style="margin-block-end: 50px">
+    <thead>
+        <tr>
+            <th scope="col" hidden></th>
+            <th scope="col">Nome</th>
+            <th scope="col">Quantidade de Produtos</th>
+            <th scope="col">Opções</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: features">
+        <tr>
+            <td data-bind="text: categoryID" hidden></td>
+            <td>
+                <input type="text" name="nameInput" class="form-control" data-bind="attr: { id: 'nameInput_' + categoryID() }, value: name" disabled />
+            </td>
+            <td data-bind="text: qtdProducts"></td>
+            <td>
+                <button title="Salvar" data-toggle="tooltip" data-bind="click: $root.saveEditCategory, attr: { id: 'save_' + categoryID() }" style='visibility:hidden'><i class="material-icons">&#xE876;</i></button>
+
+                <button class="edit" title="Editar" data-toggle="tooltip" data-bind="click: $root.editCategory, attr: { id: 'edit_' + categoryID() }" style='visibility:visible'><i class="material-icons">&#xE254;</i></button>
+
+                <button class="delete" title="Deletar" data-toggle="tooltip" data-bind="click: $root.deleteCategory"><i class="material-icons">&#xE872;</i></button>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 <script type="text/javascript">
 
@@ -34,7 +53,7 @@
         if (data != null) {
             this.categoryID = ko.observable(data.categoryID);
             this.name = ko.observable(data.name);
-            this.qtdProducts = ko.observable(data.qtdProducts);
+            this.qtdProducts = ko.observable(data.qtdProducts ? data.qtdProducts : 0);
         }
     }
 
@@ -44,22 +63,129 @@
             var self = this;
 
             self.features = ko.observableArray();
+            self.name = ko.observable("");
+            self.nameInput = ko.observable("");
 
-            $.ajax({
-                type: "GET",
-                url: '/Category/ListCategorys',
-                success: function (response) {
-                    var mappedFeatures = $.map(response, function (item) {
-                        return new FeatureRequest(item)
-                    });
+            self.editCategory = (value) => {
+                console.log(value);
+                $('#nameInput_' + value.categoryID()).removeAttr('disabled');
+                $('#save_' + value.categoryID()).css('visibility', 'visible');
+                $('#edit_' + value.categoryID()).css('visibility', 'hidden');
+            };
 
-                    self.features(mappedFeatures);
-                },
-                error: function (response) {
-                    console.log('Erro' + response);
-                }
-            });
+            self.saveEditCategory = (value) => {
+                console.log(value);
+                $('#nameInput_' + value.categoryID()).attr('disabled', true);
+                $('#edit_' + value.categoryID()).css('visibility', 'visible');
+                $('#save_' + value.categoryID()).css('visibility', 'hidden');
 
+                $.ajax({
+                    type: "PUT",
+                    url: '/Category/UpdateCategory',
+                    data: {
+                        categoryID: value.categoryID(),
+                        name: value.name()
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        Swal.fire('Categoria alterada com sucesso.', '', 'success');
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops..',
+                            text: JSON.parse(xhr.responseText)
+                        });
+                    }
+                });
+            };
+
+            // Config DataTable
+            const listCategorys = () => {
+                $.ajax({
+                    type: "GET",
+                    url: '/Category/ListCategorys',
+                    success: function (response) {
+                        var mappedFeatures = $.map(response, function (item) {
+                            return new FeatureRequest(item)
+                        });
+
+                        self.features(mappedFeatures);
+
+                        $("#table-categorys").DataTable({
+                            order: [[0, "desc"]],
+                            select: true,
+                            searching: true,
+                            pageLength: 25,
+                            language: {
+                                "sProcessing": "Carregando...",
+                                "sLengthMenu": "Mostrar _MENU_ registros",
+                                "sZeroRecords": "Não foram encontrados registros",
+                                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                                "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
+                                "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
+                                "sInfoPostFix": "",
+                                "sSearch": "Buscar:",
+                                "sUrl": "",
+                                "oPaginate": {
+                                    "sFirst": "Primeiro",
+                                    "sPrevious": "Anterior",
+                                    "sNext": "Seguinte",
+                                    "sLast": "Último"
+                                }
+                            },
+                            "bDestroy": true,
+                            dom: '<"html5buttons"B>lTfgitp',
+                            buttons: [
+                                { extend: 'copy' },
+                                { extend: 'csv' },
+                                { extend: 'excel', title: 'Relatorio_Categorias' },
+                                { extend: 'pdf', title: 'Relatorio_Categorias' },
+                                {
+                                    extend: 'print',
+                                    customize: function (win) {
+                                        $(win.document.body).addClass('white-bg');
+                                        $(win.document.body).css('font-size', '10px');
+                                        $(win.document.body).find('table')
+                                            .addClass('compact')
+                                            .css('font-size', 'inherit');
+                                    }
+                                }
+                            ]
+                        });
+                    },
+                    error: function (response) {
+                        console.log('Erro' + response);
+                    }
+                });
+            }
+
+            listCategorys();
+
+            // Cadastrar Categoria
+            self.createdCategory = () => {
+                $.ajax({
+                    type: "POST",
+                    url: '/Category/CreatedCategory',
+                    data: {
+                        name: self.name()
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        self.features.unshift(new FeatureRequest(response));
+                        Swal.fire('Categoria cadastrada com sucesso', '', 'success');
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops..',
+                            text: JSON.parse(xhr.responseText)
+                        });
+                    }
+                });
+            };
+
+            // Deletar Categoria
             self.deleteCategory = (value) => {
                 console.log(value);
                 console.log(value.qtdProducts());
@@ -67,7 +193,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops..',
-                        text: 'Não é possível remover a categoria, pois possui, produtos vinculados, delete os produtos primeiro.'
+                        text: 'Não é possível remover a categoria, pois possui produtos vinculados, delete os produtos primeiro.'
                     });
                 } else {
                     Swal.fire({
@@ -76,14 +202,28 @@
                         confirmButtonText: `Excluir`,
                         confirmButtonColor: '#d33',
                     }).then((result) => {
-                        /* Read more about isConfirmed, isDenied below */
                         if (result.isConfirmed) {
-                            Swal.fire('Saved!', '', 'success')
-                        } else if (result.isDenied) {
-                            Swal.fire('Changes are not saved', '', 'info')
+                            $.ajax({
+                                type: "DELETE",
+                                url: '/Category/DeleteCategory',
+                                data: {
+                                    categoryID: value.categoryID()
+                                },
+                                success: function (response) {
+                                    console.log(response);
+                                    listCategorys();
+                                    Swal.fire('Categoria excluida com sucesso', '', 'success');
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops..',
+                                        text: JSON.parse(xhr.responseText)
+                                    });
+                                }
+                            });
                         }
                     })
-                    self.features.remove(value);
                 }
             };
 
