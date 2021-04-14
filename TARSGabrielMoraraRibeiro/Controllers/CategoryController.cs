@@ -25,7 +25,7 @@ namespace TARSGabrielMoraraRibeiro.Controllers
         {
             try
             {
-                var categorys = rep._context.Categorys.ToList();
+                var categorys = rep._context.Categorys.OrderByDescending(s => s.CategoryID).ToList();
                 var view = new List<CategoriaViewModel>();
                 foreach (var item in categorys)
                 {
@@ -41,7 +41,10 @@ namespace TARSGabrielMoraraRibeiro.Controllers
             }
             catch (Exception e)
             {
-                return Json("Houve um erro interno, já estamos verificando!", HttpStatusCode.InternalServerError);
+                return new JsonResult("Houve um erro interno, já estamos verificando.")
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
             }
         }
 
@@ -60,52 +63,78 @@ namespace TARSGabrielMoraraRibeiro.Controllers
 
                     rep._context.Categorys.Add(category);
                     rep._context.SaveChanges();
+                    return Json(category);
                 }
                 else
                 {
-                    return Json("Categoria já existe", HttpStatusCode.BadRequest);
+                    return new JsonResult("Categoria já existe.")
+                    {
+                        StatusCode = (int)HttpStatusCode.BadRequest
+                    };
                 }
-
-                return Json("OK");
             }
             catch (Exception)
             {
-                return Json("Houve um erro interno, já estamos verificando!", HttpStatusCode.InternalServerError);
+                return new JsonResult("Houve um erro interno, já estamos verificando.")
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
             }
         }
 
-        public JsonResult UpdateCategory(string id, string name)
+        public JsonResult UpdateCategory(string categoryID, string name)
         {
             try
             {
-                var category = rep._context.Categorys.FirstOrDefault(s => s.CategoryID == Convert.ToInt32(id));
-                category.Name = name;
-                rep._context.SaveChanges();
-                return Json("OK");
+                var category = rep._context.Categorys.FirstOrDefault(s => s.CategoryID == Convert.ToInt32(categoryID));
+
+                var categoryExist = rep._context.Categorys.FirstOrDefault(s => s.Name.Equals(name));
+                if (categoryExist == null)
+                {
+                    category.Name = name;
+                    rep._context.SaveChanges();
+                    return Json("OK");
+                }
+                else
+                {
+                    return new JsonResult("Categoria já existe.")
+                    {
+                        StatusCode = (int)HttpStatusCode.BadRequest
+                    };
+                }
             }
             catch (Exception)
             {
-                return Json("Houve um erro interno, já estamos verificando!", HttpStatusCode.InternalServerError);
+                return new JsonResult("Houve um erro interno, já estamos verificando.")
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
             }
         }
 
-
-        public JsonResult DeleteCategory(string id, string name)
+        public JsonResult DeleteCategory(string categoryID)
         {
             try
             {
-                var category = rep._context.Categorys.FirstOrDefault(s => s.CategoryID == Convert.ToInt32(id));
+                var category = rep._context.Categorys.FirstOrDefault(s => s.CategoryID == Convert.ToInt32(categoryID));
                 if (category != null)
                 {
                     rep._context.Categorys.Remove(category);
                     rep._context.SaveChanges();
                     return Json("OK");
                 }
-                return Json("Categoria nao existi", HttpStatusCode.BadRequest);
+
+                return new JsonResult("Categoria nao existi.")
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
             }
             catch (Exception e)
             {
-                return Json("Houve um erro interno, já estamos verificando!", HttpStatusCode.InternalServerError);
+                return new JsonResult("Houve um erro interno, já estamos verificando.")
+                {
+                    StatusCode = (int)HttpStatusCode.InternalServerError
+                };
             }
         }
     }
