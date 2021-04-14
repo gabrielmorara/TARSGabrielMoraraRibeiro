@@ -38,7 +38,7 @@ namespace TARSGabrielMoraraRibeiro.Controllers
 
         public IActionResult Logout()
         {
-            return View();
+            return View("Login");
         }
 
         public IActionResult Perfil()
