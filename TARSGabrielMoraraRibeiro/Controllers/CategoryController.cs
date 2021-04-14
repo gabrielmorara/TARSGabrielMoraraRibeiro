@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using DataBaseTars.DataBase;
 using Microsoft.AspNetCore.Mvc;
+using TARSGabrielMoraraRibeiro.Models;
 
 namespace TARSGabrielMoraraRibeiro.Controllers
 {
@@ -24,7 +25,19 @@ namespace TARSGabrielMoraraRibeiro.Controllers
         {
             try
             {
-                return Json(rep._context.Categorys.ToList());
+                var categorys = rep._context.Categorys.ToList();
+                var view = new List<CategoriaViewModel>();
+                foreach (var item in categorys)
+                {
+                    var category = new CategoriaViewModel();
+                    category.CategoryID = item.CategoryID;
+                    category.Name = item.Name;
+                    category.QtdProducts = rep._context.Products.Where(s => s.CategoryID == item.CategoryID).Count();
+
+                    view.Add(category);
+                }
+
+                return Json(view);
             }
             catch (Exception e)
             {
