@@ -16,22 +16,26 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <script type="text/javascript" src="~/lib/knockout/knockout-latest.js"></script>
+
+    <!-- Jquey -->
     <script type="text/javascript" src="~/lib/jquery/dist/jquery.js"></script>
     <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
 
-    <!-- Include a required theme -->
+    <!-- dataTablas -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+
+    <!-- sweetalert2 -->
     <link href="//cdn.jsdelivr.net/npm/@@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
 
+    <!-- maskMoney -->
     <script src="https://cdn.rawgit.com/plentz/jquery-maskmoney/master/dist/jquery.maskMoney.min.js"></script>
-
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
 </head>
 
 <body style="height: auto !important">
+
+    <!-- header -->
     <header style="background-color: #3ca85c">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light  border-bottom box-shadow mb-3" style="background: #3ca85c">
             <div class="container">
@@ -42,19 +46,16 @@
                 </button>
             </div>
         </nav>
-
     </header>
-    <div class="sk-spinner sk-spinner-chasing-dots">
-        <div class="sk-dot1" style="color:white; background-color:#2d3561;"></div>
-        <div class="sk-dot2" style="color:white; background-color:#2d3561;"></div>
-    </div>
 
+    <!-- main -->
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
+    <!-- footer -->
     <footer class="border-top footer text-muted" style="background: #3ca85c">
         <div class="text-center font-bold">
             <p style="color: white">
@@ -62,7 +63,6 @@
             </p>
         </div>
     </footer>
-
 
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
@@ -72,23 +72,7 @@
     <script src="~/js/cookie.manager.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-    <!-- Handler for ajax calls -->
-    <script type="text/javascript">
-        $(document)
-            .ajaxStart(function () {
-                $(document.body).toggleClass('sk-loading');
-                $(document.body).find('sk-spinner').show();
-            })
-            .ajaxStop(function () {
-                $(document.body).removeClass('sk-loading');
-                $(document.body).find('sk-spinner').hide();
-            })
-            .ajaxError(function () {
-                $(document.body).removeClass('sk-loading');
-                $(document.body).find('sk-spinner').hide();
-            });
-    </script>
-
     @RenderSection("Scripts", required: false)
+
 </body>
 </html>
