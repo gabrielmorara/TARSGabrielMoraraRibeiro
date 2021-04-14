@@ -95,13 +95,13 @@
 
                             <div class="row align-content-between">
                                 <div class="col-md-2 p-xss">
-                                    <label for="priceDefault">Preço De</label>
-                                    <input type="number" id="priceDefault" name="priceDefault" class="form-control" data-bind="value:priceDefault" />
+                                    <label for="priceDefault">Preço DE</label>
+                                    <input type="text" id="priceDefault" name="priceDefault" class="form-control dinheiro" data-bind="value:priceDefault" />
                                 </div>
 
                                 <div class="col-md-2 p-xss">
-                                    <label for="priceOffer">Preço Por</label>
-                                    <input type="number" id="priceOffer" name="priceOffer" class="form-control" data-bind="value:priceOffer" />
+                                    <label for="priceOffer">Preço POR</label>
+                                    <input type="text" id="priceOffer" name="priceOffer" class="form-control dinheiro" data-bind="value:priceOffer" />
                                 </div>
 
                                 <div class="col-md-2 p-xss">
@@ -179,6 +179,14 @@
 
 <script type="text/javascript">
 
+    $(document).ready(function () {
+        $(".dinheiro").maskMoney({
+            prefix: "R$ ",
+            decimal: ",",
+            thousands: "."
+        });
+    });
+
     var productID = GetParameter();
 
     $('#category').select2({
@@ -200,7 +208,6 @@
     $(document).ready(function () {
         $.getJSON('/Products/GetProductByID?productID=' + productID, function (data) {
             var vm = new ViewModel(data);
-
             // ativa knockout.js
             ko.applyBindings(vm);
         });
@@ -231,10 +238,9 @@
             self.title = ko.observable(data.title);
             self.brand = ko.observable(data.brand);
 
-
             self.stock = ko.observable(data.stock);
-            self.priceDefault = ko.observable(data.priceDefault);
-            self.priceOffer = ko.observable(data.priceOffer);
+            self.priceDefault = ko.observable(data.priceDefault.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }));
+            self.priceOffer = ko.observable(data.priceOffer.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }));
             self.description = ko.observable(data.description);
 
             self.ean = ko.observable(data.ean);
@@ -247,13 +253,17 @@
             self.weight = ko.observable(data.weight);
 
             self.updateProduct = () => {
+
+                const _priceDefault = self.priceDefault().replace(/[^0-9,]/g, '').replace(',', '.');
+                const _priceOffer = self.priceOffer().replace(/[^0-9,]/g, '').replace(',', '.');
+
                 var data = {
                     Title: self.title(),
                     Brand: self.brand(),
                     CategoryID: self.selectedCategory(),
                     Stock: self.stock(),
-                    PriceDefault: self.priceDefault(),
-                    PriceOffer: self.priceOffer(),
+                    PriceDefault: _priceDefault,
+                    PriceOffer: _priceOffer,
                     Description: self.description(),
                     EAN: self.ean(),
                     NCM: self.ncm(),
@@ -263,7 +273,6 @@
                     Width: self.width(),
                     Weight: self.weight(),
                 };
-
                 $.ajax({
                     type: "PUT",
                     url: '/Products/UpdateProduct',

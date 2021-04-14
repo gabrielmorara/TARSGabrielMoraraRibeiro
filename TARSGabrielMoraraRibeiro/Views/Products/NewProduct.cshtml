@@ -96,13 +96,13 @@
 
                             <div class="row align-content-between">
                                 <div class="col-md-2 p-xss">
-                                    <label for="priceDefault">Preço De</label>
-                                    <input type="number" id="priceDefault" name="priceDefault" class="form-control" data-bind="value:priceDefault" />
+                                    <label for="priceDefault">Preço DE</label>
+                                    <input type="text" id="priceDefault" name="priceDefault" class="form-control dinheiro" data-bind="value:priceDefault" />
                                 </div>
 
                                 <div class="col-md-2 p-xss">
-                                    <label for="priceOffer">Preço Por</label>
-                                    <input type="number" id="priceOffer" name="priceOffer" class="form-control" data-bind="value:priceOffer" />
+                                    <label for="priceOffer">Preço POR</label>
+                                    <input type="text" id="priceOffer" name="priceOffer" class="form-control dinheiro" data-bind="value:priceOffer" />
                                 </div>
 
                                 <div class="col-md-2 p-xss">
@@ -185,6 +185,12 @@
 </div>
 
 <script type="text/javascript">
+
+    $('.dinheiro').maskMoney({
+        prefix: "R$ ",
+        decimal: ",",
+        thousands: "."
+    });
 
     $('#category').select2({
         theme: "classic",
@@ -310,8 +316,9 @@
             self.selectedCategory = ko.observable("");
 
             self.stock = ko.observable([]);
-            self.priceDefault = ko.observable([]);
-            self.priceOffer = ko.observable([]);
+
+            self.priceDefault = ko.observable("");
+            self.priceOffer = ko.observable("");
             self.description = ko.observable("");
 
             self.ean = ko.observable("");
@@ -339,13 +346,16 @@
             });
 
             self.createProduct = () => {
+                const _priceDefault = self.priceDefault().replace(/[^0-9,]/g, '').replace(',', '.');
+                const _priceOffer = self.priceOffer().replace(/[^0-9,]/g, '').replace(',', '.');
+
                 var data = {
                     Title: self.title(),
                     Brand: self.brand(),
                     CategoryID: self.selectedCategory(),
                     Stock: self.stock(),
-                    PriceDefault: self.priceDefault(),
-                    PriceOffer: self.priceOffer(),
+                    PriceDefault: _priceDefault,
+                    PriceOffer: _priceOffer,
                     Description: self.description(),
                     EAN: self.ean(),
                     NCM: self.ncm(),
