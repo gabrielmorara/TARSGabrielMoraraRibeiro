@@ -53,7 +53,6 @@
     }
 
     #wrapper.toggled #page-content-wrapper {
-        position: absolute;
         margin-right: -220px;
     }
 
@@ -178,13 +177,13 @@
     /*-------------------------------*/
 
     .hamburger {
-        position: fixed;
+        position: absolute;
         top: 20px;
         z-index: 999;
         display: block;
         width: 32px;
         height: 32px;
-        margin-left: 15px;
+        margin-left: -100px;
         background: transparent;
         border: none;
     }
@@ -340,7 +339,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Produtos </a>
                 <ul role="menu">
                     <li style=" all: unset;"><a href="#"></a></li>
-                    <li><a href="/Products/ListProducts">Listar Produtos</a></li>
+                    <li><a href="/Products/NewProduct">Listar Produtos</a></li>
                     <li><a href="/Products/NewProduct">Novo Produto</a></li>
                 </ul>
             </li>
@@ -349,9 +348,6 @@
             </li>
             <li>
                 <a href="#">Perfil</a>
-            </li>
-            <li>
-                <i class="fa fa-sign-out fa-lg"></i>
             </li>
         </ul>
     </nav>
@@ -363,7 +359,6 @@
             <span class="hamb-bottom"></span>
         </button>
     </div>
-    <!-- /#wrapper -->
 
     <script>
         $(document).ready(function () {
