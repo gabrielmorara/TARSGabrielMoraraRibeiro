@@ -34,11 +34,13 @@
             </td>
             <td data-bind="text: qtdProducts"></td>
             <td>
-                <button title="Salvar" data-toggle="tooltip" data-bind="click: $root.saveEditCategory, attr: { id: 'save_' + categoryID() }" style='visibility:hidden'><i class="material-icons">&#xE876;</i></button>
+                <div class="row justify-content-between">
+                    <button title="Salvar" data-toggle="tooltip" data-bind="click: $root.saveEditCategory, attr: { id: 'save_' + categoryID() }" style='visibility:hidden'><i class="material-icons">&#xE876;</i></button>
 
-                <button class="edit" title="Editar" data-toggle="tooltip" data-bind="click: $root.editCategory, attr: { id: 'edit_' + categoryID() }" style='visibility:visible'><i class="material-icons">&#xE254;</i></button>
+                    <button class="edit" title="Editar" data-toggle="tooltip" data-bind="click: $root.editCategory, attr: { id: 'edit_' + categoryID() }" style='visibility:visible'><i class="material-icons">&#xE254;</i></button>
 
-                <button class="delete" title="Deletar" data-toggle="tooltip" data-bind="click: $root.deleteCategory"><i class="material-icons">&#xE872;</i></button>
+                    <button class="delete" title="Deletar" data-toggle="tooltip" data-bind="click: $root.deleteCategory"><i class="material-icons">&#xE872;</i></button>
+                </div>
             </td>
         </tr>
     </tbody>
@@ -59,10 +61,34 @@
 
             var self = this;
 
-            self.features = ko.observableArray();
+            self.features = ko.observableArray([]);
             self.name = ko.observable("");
             self.nameInput = ko.observable("");
 
+            // Cadastrar Categoria
+            self.createdCategory = () => {
+                $.ajax({
+                    type: "POST",
+                    url: '/Category/CreatedCategory',
+                    data: {
+                        name: self.name()
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        self.features.unshift(new FeatureRequest(response));
+                        Swal.fire('Categoria cadastrada com sucesso', '', 'success');
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops..',
+                            text: JSON.parse(xhr.responseText)
+                        });
+                    }
+                });
+            };
+
+            // exibi input para editar
             self.editCategory = (value) => {
                 console.log(value);
                 $('#nameInput_' + value.categoryID()).removeAttr('disabled');
@@ -70,6 +96,7 @@
                 $('#edit_' + value.categoryID()).css('visibility', 'hidden');
             };
 
+            // salva edicao
             self.saveEditCategory = (value) => {
                 console.log(value);
                 $('#nameInput_' + value.categoryID()).attr('disabled', true);
@@ -97,8 +124,55 @@
                 });
             };
 
+            // Deletar Categoria
+            self.deleteCategory = (value) => {
+                console.log(value);
+                console.log(value.qtdProducts());
+                if (value.qtdProducts() >= 1) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops..',
+                        text: 'Não é possível remover a categoria, pois possui produtos vinculados, delete os produtos primeiro.'
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Tem certeza que quer excluir a categoria ' + value.name() + '?',
+                        showCancelButton: true,
+                        confirmButtonText: `Excluir`,
+                        confirmButtonColor: '#d33',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                type: "DELETE",
+                                url: '/Category/DeleteCategory',
+                                data: {
+                                    categoryID: value.categoryID()
+                                },
+                                success: function (response) {
+                                    console.log(response);
+
+                                    $("#nameInput_" + value.categoryID()).parent().parent().remove()
+
+                                    Swal.fire('Categoria excluida com sucesso', '', 'success');
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops..',
+                                        text: JSON.parse(xhr.responseText)
+                                    });
+                                }
+                            });
+                        }
+                    })
+                }
+            };
+
             // Config DataTable
             const listCategorys = () => {
+
+                self.features = ko.observableArray([]);
+
                 $.ajax({
                     type: "GET",
                     url: '/Category/ListCategorys',
@@ -158,71 +232,6 @@
             }
 
             listCategorys();
-
-            // Cadastrar Categoria
-            self.createdCategory = () => {
-                $.ajax({
-                    type: "POST",
-                    url: '/Category/CreatedCategory',
-                    data: {
-                        name: self.name()
-                    },
-                    success: function (response) {
-                        console.log(response);
-                        self.features.unshift(new FeatureRequest(response));
-                        Swal.fire('Categoria cadastrada com sucesso', '', 'success');
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops..',
-                            text: JSON.parse(xhr.responseText)
-                        });
-                    }
-                });
-            };
-
-            // Deletar Categoria
-            self.deleteCategory = (value) => {
-                console.log(value);
-                console.log(value.qtdProducts());
-                if (value.qtdProducts() >= 1) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops..',
-                        text: 'Não é possível remover a categoria, pois possui produtos vinculados, delete os produtos primeiro.'
-                    });
-                } else {
-                    Swal.fire({
-                        title: 'Tem certeza que quer excluir a categoria ' + value.name() + '?',
-                        showCancelButton: true,
-                        confirmButtonText: `Excluir`,
-                        confirmButtonColor: '#d33',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $.ajax({
-                                type: "DELETE",
-                                url: '/Category/DeleteCategory',
-                                data: {
-                                    categoryID: value.categoryID()
-                                },
-                                success: function (response) {
-                                    console.log(response);
-                                    listCategorys();
-                                    Swal.fire('Categoria excluida com sucesso', '', 'success');
-                                },
-                                error: function (xhr, ajaxOptions, thrownError) {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Oops..',
-                                        text: JSON.parse(xhr.responseText)
-                                    });
-                                }
-                            });
-                        }
-                    })
-                }
-            };
 
         } catch (e) {
             console.log(e);

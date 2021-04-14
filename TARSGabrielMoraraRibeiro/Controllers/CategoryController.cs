@@ -97,7 +97,7 @@ namespace TARSGabrielMoraraRibeiro.Controllers
                 }
                 else
                 {
-                    return new JsonResult("Categoria já existe.")
+                    return new JsonResult("Categoria já existe, por favor informar um nome diferente.")
                     {
                         StatusCode = (int)HttpStatusCode.BadRequest
                     };
