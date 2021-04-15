@@ -13,10 +13,11 @@ namespace TARSGabrielMoraraRibeiro.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return ValidateUser();
         }
 
-        [HttpPost]
+        // Verifica se o usuario esta registrado para autentificar 
+        [HttpGet]
         public JsonResult AuthenticateUser(string cpf, string password)
         {
             try
@@ -60,6 +61,27 @@ namespace TARSGabrielMoraraRibeiro.Controllers
             }
         }
 
+        [HttpGet]
+        public JsonResult GetUser()
+        {
+            try
+            {
+                var userCPF = HttpContext.Request.Cookies["UserCPF"];
+                var userToken = HttpContext.Request.Cookies["UserToken"];
+
+                var user = rep.GetUserByCPF(userCPF);
+
+                return Json(user);
+            }
+            catch (Exception e)
+            {
+                return new JsonResult("Houve um erro interno, já estamos verificando.")
+                {
+                    StatusCode = (int)HttpStatusCode.InternalServerError
+                };
+            }
+        }
+
         [HttpPost]
         public JsonResult RegisterUser(string name, string email, string cpf, string password)
         {
@@ -86,11 +108,63 @@ namespace TARSGabrielMoraraRibeiro.Controllers
                     return Json("OK");
                 }
 
-                return Json("O usuario já esta cadastrado, favor realizar o login", HttpStatusCode.BadRequest);
+                return new JsonResult("O usuario já esta cadastrado, favor realizar o login")
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
             }
             catch (Exception e)
             {
-                return Json("Houve um erro interno, já estamos verificando!", HttpStatusCode.InternalServerError);
+                return new JsonResult("Houve um erro interno, já estamos verificando.")
+                {
+                    StatusCode = (int)HttpStatusCode.InternalServerError
+                };
+            }
+        }
+
+        [HttpPut]
+        public JsonResult UpdateUser(string name, string email, string oldPassword, string newPassword)
+        {
+            try
+            {
+                var userCPF = HttpContext.Request.Cookies["UserCPF"];
+
+                var user = rep.GetUserByCPF(userCPF);
+
+                if (user != null)
+                {
+                    var oldPassswordEncrypt = Common.ConvertedPassword.Encrypt(oldPassword);
+                    if (oldPassswordEncrypt.Equals(user.Password_hash))
+                    {
+                        var newPassswordEncrypt = Common.ConvertedPassword.Encrypt(newPassword);
+
+                        user.Name = name;
+                        user.Email = email;
+                        user.Password_hash = newPassswordEncrypt;
+                        user.Updated_at = Common.Commons.HourBrasilia;
+
+                        rep._context.SaveChanges();
+
+                        return Json(newPassswordEncrypt);
+                    }
+
+                    return new JsonResult("A senha atual está incorreta.")
+                    {
+                        StatusCode = (int)HttpStatusCode.BadRequest
+                    };
+                }
+
+                return new JsonResult("Erro, CPF não encontrado.")
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
+            }
+            catch (Exception e)
+            {
+                return new JsonResult("Houve um erro interno, já estamos verificando.")
+                {
+                    StatusCode = (int)HttpStatusCode.InternalServerError
+                };
             }
         }
     }

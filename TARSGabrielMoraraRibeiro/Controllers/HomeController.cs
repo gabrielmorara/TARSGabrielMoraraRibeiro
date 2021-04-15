@@ -23,7 +23,7 @@ namespace TARSGabrielMoraraRibeiro.Controllers
 
         public IActionResult Index()
         {
-            return ValidateUser();
+            return View("Products/ListProducts");
         }
 
         public IActionResult Register()
@@ -43,7 +43,7 @@ namespace TARSGabrielMoraraRibeiro.Controllers
 
         public IActionResult Perfil()
         {
-            return View();
+            return ValidateUser();
         }
 
         public IActionResult Privacy()

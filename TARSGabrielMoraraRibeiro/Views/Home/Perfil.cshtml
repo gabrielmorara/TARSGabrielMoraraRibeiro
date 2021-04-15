@@ -1,1 +1,220 @@
-﻿
+﻿<style>
+
+    .error {
+        color: red;
+        font-weight: bold;
+    }
+
+    label {
+        font-weight: bold
+    }
+
+    input,
+    button {
+        border: 0;
+        margin-bottom: 3px;
+        display: block;
+        width: 100%;
+    }
+
+    .common_box_body {
+        padding: 15px;
+        border: 12px solid #3ca85c;
+        border-color: #28BAA2;
+        border-radius: 15px;
+        background: #f2fff6;
+    }
+
+    .container {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px;
+        margin-block-end: 10px;
+    }
+
+    .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+
+<!-- Navigation -->
+@Html.Partial("_Navigation")
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default" style="border-radius: 15px;">
+                <div class="common_box_body panel-body">
+                    <div class="center">
+                        <h1 style="font-weight: bold">Perfil do Usuário</h1>
+                    </div>
+                    <form action="#" name="registration" id="registration">
+
+                        <div class="form-group">
+                            <label for="name">Nome Completo</label>
+                            <p data-bind="css: { error: name.hasError }">
+                                <input type="text" id="name" name="name" class="form-control" data-bind='value: name, valueUpdate: "afterkeydown"' />
+                                <span data-bind='visible: name.hasError, text: name.validationMessage'> </span>
+                            </p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cpf">CPF</label>
+                            <input type="text" id="cpf" name="cpf" class="form-control" data-bind='value: cpf' disabled>
+                            <span id="cpfError" class="error" style="display: none;">O CPF informado é invalido</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" id="email" name="email" class="form-control" data-bind="value:email" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="oldPassword">Senha atual</label>
+                            <input type="password" id="oldPassword" name="oldPassword" class="form-control" data-bind="value:oldPassword" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="newPassword">Nova Senha</label>
+                            <input type="password" id="newPassword" name="newPassword" class="form-control" data-bind="value:newPassword" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="newConfirmPassword">Confirmar Nova Senha</label>
+                            <input type="password" id="newConfirmPassword" name="newConfirmPassword" class="form-control" data-bind="value:newConfirmPassword" />
+                        </div>
+
+                        <div class="center">
+                            <button style="width: 50%" type="button" class="btn btn-success" data-bind="click:updateUser, enable:isValiForm()">
+                                <span aria-hidden="true"><b>Salvar</b></span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    // específica regras de validação do formulario
+    $(document).ready(function () {
+        $("#registration").validate({
+            rules: {
+                name: { required: true, minlength: 3 },
+                email: {
+                    required: true,
+                    email: true
+                },
+                oldPassword: {
+                    required: true,
+                    minlength: 5,
+                },
+                newPassword: {
+                    required: true,
+                    minlength: 5,
+                },
+                newConfirmPassword: {
+                    required: true,
+                    minlength: 5,
+                    equalTo: "#newPassword"
+                }
+            },
+            messages: {
+                name: {
+                    required: "Por favor informe seu nome",
+                    minlength: "Por favor informe pelo menos 3 caracteres"
+                },
+                email: {
+                    required: "Por favor informe seu email",
+                    email: "Email invalido",
+                },
+                oldPassword: {
+                    required: "Informe sua senha atual",
+                    minlength: "Senha muito fraca, informe 6 ou mais caracteres"
+                },
+                newPassword: {
+                    required: "Informe sua nova senha",
+                    minlength: "Senha muito fraca, informe 6 ou mais caracteres"
+                },
+                newConfirmPassword: {
+                    required: "Confirme a senha",
+                    minlength: "Senha muito fraca, informe 6 ou mais caracteres",
+                    equalTo: "Senha diferente, favor informe a mesma senha"
+                }
+            },
+        });
+    });
+
+    // busca informações do usuário
+    $(document).ready(function () {
+        $.getJSON('/Users/GetUser', function (data) {
+            var vm = new ViewModel(data);
+
+            // ativa knockout.js
+            ko.applyBindings(vm);
+        });
+    });
+
+
+    function ViewModel(data) {
+        try {
+
+            var self = this;
+
+            self.name = ko.observable(data.name);
+            self.cpf = ko.observable(mCPF(data.cpf));
+            self.email = ko.observable(data.email);
+
+            self.oldPassword = ko.observable("");
+            self.newPassword = ko.observable("");
+            self.newConfirmPassword = ko.observable("");
+
+            self.isValiForm = ko.computed(() => {
+                return self.name() &&
+                    self.email() &&
+                    self.cpf &&
+                    self.oldPassword &&
+                    self.newPassword() &&
+                    self.newConfirmPassword() &&
+                    $('.form-control.error').length == 0;
+            });
+
+            self.updateUser = () => {
+                $.ajax({
+                    type: "PUT",
+                    url: '/Users/UpdateUser',
+                    data: {
+                        name: self.name(),
+                        email: self.email(),
+                        oldPassword: self.oldPassword(),
+                        newPassword: self.newPassword()
+                    },
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'OK',
+                            text: 'Alterado com sucesso!'
+                        });
+                        window.location.href = '/Home/Login';
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops..',
+                            text: JSON.parse(xhr.responseText)
+                        });
+                    }
+                });
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+</script>

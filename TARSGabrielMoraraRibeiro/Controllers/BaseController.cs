@@ -22,7 +22,7 @@ namespace TARSGabrielMoraraRibeiro.Controllers
                 return View();
             }
 
-            return View("login");
+            return View("home/login");
         }
     }
 }

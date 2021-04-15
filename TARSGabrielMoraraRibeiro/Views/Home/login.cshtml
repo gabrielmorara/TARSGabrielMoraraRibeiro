@@ -246,17 +246,16 @@
 
             self.authenticateUser = () => {
                 $.ajax({
-                    type: "POST",
+                    type: "GET",
                     url: '/Users/AuthenticateUser',
                     data: {
                         cpf: self.cpf(),
                         password: self.password()
                     },
                     success: function (response) {
-                        console.log(response);
                         setCookie('UserCPF', self.cpf());
                         setCookie('UserToken', response);
-                        window.location.href = '/Home/Index';
+                        window.location.href = '/Products/ListProducts';
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         self.errorMsg(JSON.parse(xhr.responseText));

@@ -28,7 +28,7 @@ namespace DataBaseTars
                 var user = GetUserByCPF(cpf);
                 if (user != null)
                 {
-                    return user.Password_hash.Equals(token);
+                    return true;
                 }
                 return false;
             }
@@ -51,6 +51,7 @@ namespace DataBaseTars
             }
         }
 
+        // Retorno somente numeros 
         public static string GetOnlyNumber(String resource)
         {
             return String.Join("", System.Text.RegularExpressions.Regex.Split(resource, @"[^\d]"));

@@ -2,7 +2,6 @@
     #table-categorys_wrapper {
         margin-block-end: 85px;
     }
-
 </style>
 
 <!-- Navigation -->
@@ -37,7 +36,7 @@
         <tr>
             <td data-bind="text: categoryID" hidden></td>
             <td>
-                <input type="text" name="nameInput" class="form-control" data-bind="attr: { id: 'nameInput_' + categoryID() }, value: name, text: name" disabled />
+                <input type="text" name="nameInput" class="form-control" data-bind="attr: { id: 'nameInput_' + categoryID() }, textInput: name" disabled />
             </td>
             <td data-bind="text: qtdProducts"></td>
             <td>
