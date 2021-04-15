@@ -7,8 +7,7 @@ namespace TARSGabrielMoraraRibeiro.Common
 {
     public class Commons
     {
-
-
+        // Retorna DataHora atual de Brasilia
         public static DateTime HourBrasilia
         {
             get

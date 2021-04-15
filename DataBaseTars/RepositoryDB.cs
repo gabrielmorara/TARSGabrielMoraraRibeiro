@@ -21,6 +21,7 @@ namespace DataBaseTars
             }
         }
 
+        // Verifica se é um usuario valido.
         public bool ValidateUser(string cpf, string token)
         {
             try
@@ -38,6 +39,7 @@ namespace DataBaseTars
             }
         }
 
+        // Retorna o usuario pelo CPF
         public Users GetUserByCPF(string cpf)
         {
             try

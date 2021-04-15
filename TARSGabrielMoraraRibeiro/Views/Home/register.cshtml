@@ -210,12 +210,17 @@
                             title: 'OK',
                             text: 'Cadastrado com sucesso!'
                         });
+
                         setTimeout(function () {
                             window.location.href = '/Home/login';
-                        }, 2500);
+                        }, 1500);
                     },
-                    error: function (response) {
-                        console.log('Erro' + response);
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops..',
+                            text: JSON.parse(xhr.responseText)
+                        });
                     }
                 });
             }

@@ -11,6 +11,5 @@ namespace TARSGabrielMoraraRibeiro.Models
         public long UserID { get; set; }
         public long QtdProducts { get; set; }
         public string Name { get; set; }
-
     }
 }

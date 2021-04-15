@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "NhvmCvkktv9Y9RutPZQVL30SDxQhHJmFjrYuSItabkofLLINGwB0Fc+AtPzda+XZ+5zB38O/3SQEVQrX5PBXbg==",
+  "dgSpecHash": "vXLgtptTNngXi2WLUswuvjWCzHSk8hlVXmTR1bxwr/TBhkSUx5d5PmXBSGI32noh+vLCT49QgXzJdg9ZMEsEJA==",
   "success": true,
   "projectFilePath": "C:\\Users\\gabri\\Desktop\\PROJETOS\\Tars\\TARSGabrielMoraraRibeiro\\TARSGabrielMoraraRibeiro\\TARSGabrielMoraraRibeiro.csproj",
   "expectedPackageFiles": [
@@ -68,6 +68,7 @@
     "C:\\Users\\gabri\\.nuget\\packages\\npgsql\\5.0.4\\npgsql.5.0.4.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\5.0.2\\npgsql.entityframeworkcore.postgresql.5.0.2.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\nuget.frameworks\\4.7.0\\nuget.frameworks.4.7.0.nupkg.sha512",
+    "C:\\Users\\gabri\\.nuget\\packages\\restsharp\\106.11.7\\restsharp.106.11.7.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
