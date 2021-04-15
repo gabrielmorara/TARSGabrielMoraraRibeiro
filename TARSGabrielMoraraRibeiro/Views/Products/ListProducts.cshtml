@@ -1,18 +1,30 @@
-﻿<!-- Navigation -->
+﻿<style>
+    #table-products_wrapper {
+        margin-block-end: 85px;
+    }
+
+    .html5buttons {
+        padding-bottom: 10px;
+    }
+</style>
+
+<!-- Navigation -->
 @Html.Partial("_Navigation")
 
-<table id="example" cellspacing="0" class="table table-striped table-bordered table-condensed">
+<table id="table-products" cellspacing="0" class="table table-striped table-bordered table-condensed">
     <thead>
         <tr>
+            <th scope="col" hidden></th>
             <th scope="col">Titulo</th>
             <th scope="col">Marca</th>
             <th scope="col">Estoque</th>
-            <th scope="col">Preço Por</th>
-            <th scope="col">Detalhes</th>
+            <th scope="col">Preço POR</th>
+            <th scope="col">Opções</th>
         </tr>
     </thead>
     <tbody data-bind="foreach: Products">
         <tr>
+            <td data-bind="text: productID" hidden></td>
             <td data-bind="text: title"></td>
             <td data-bind="text: brand"></td>
             <td data-bind="text: stock"></td>
@@ -33,20 +45,61 @@
     };
 
     var Product = function (jsonItem) {
+        this.productID = ko.observable(jsonItem.productID);
         this.title = ko.observable(jsonItem.title);
         this.brand = ko.observable(jsonItem.brand);
         this.stock = ko.observable(jsonItem.stock);
-        this.priceOffer = ko.observable(jsonItem.priceOffer);
+        this.priceOffer = ko.observable(jsonItem.priceOffer.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }));
         this.edit = ko.observable("/Products/EditProduct?productID=" + jsonItem.productID);
     };
 
     window.onload = function () {
         $.getJSON('/Products/GetProducts', function (data) {
-            console.log(data);
+
             ko.applyBindings(new ViewModel(data));
-            $("#example").DataTable({
+
+            $("#table-products").DataTable({
+                responsive: true,
+                order: [[0, "desc"]],
                 select: true,
-                searching: true
+                searching: true,
+                pageLength: 25,
+                language: {
+                    "sProcessing": "Carregando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "Não foram encontrados registros",
+                    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
+                    "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "oPaginate": {
+                        "sFirst": "Primeiro",
+                        "sPrevious": "Anterior",
+                        "sNext": "Seguinte",
+                        "sLast": "Último"
+                    }
+                },
+                "bDestroy": true,
+                dom: '<"html5buttons"B>lTfgitp',
+                buttons: [
+                    { extend: 'copy' },
+                    { extend: 'csv' },
+                    { extend: 'excel', title: 'Relatorio_produtos' },
+                    { extend: 'pdf', title: 'Relatorio_produtos' },
+                    {
+                        extend: 'print',
+                        customize: function (win) {
+                            $(win.document.body).addclass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
+
+                            $(win.document.body).find('table')
+                                .addclass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+                ]
             });
         });
     }

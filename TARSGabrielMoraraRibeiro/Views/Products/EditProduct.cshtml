@@ -289,7 +289,7 @@
                             text: 'Produto alterado com sucesso!'
                         });
                         setTimeout(function () {
-                            window.location.href = '/Products/ListProducts';
+                            window.location.href = '~/Products/ListProducts';
                         }, 2500);
                     },
                     error: function (response) {
@@ -300,7 +300,7 @@
 
             self.deleteProduct = () => {
                 $.ajax({
-                    type: "PUT",
+                    type: "DELETE",
                     url: '/Products/DeleteProduct',
                     data: {
                         productID: productID
@@ -313,7 +313,7 @@
                             text: 'Produto deletado com sucesso!'
                         });
                         setTimeout(function () {
-                            window.location.href = '/ListProducts';
+                            window.location.href = '~/Products/ListProducts';
                         }, 2500);
                     },
                     error: function (response) {
