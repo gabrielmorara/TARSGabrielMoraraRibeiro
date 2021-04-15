@@ -105,7 +105,7 @@ namespace TARSGabrielMoraraRibeiro.Controllers
                     rep._context.Users.Add(newUser);
                     rep._context.SaveChanges();
 
-                    return Json("OK");
+                    return Json(passswordEncrypt);
                 }
 
                 return new JsonResult("O usuario já esta cadastrado, favor realizar o login")

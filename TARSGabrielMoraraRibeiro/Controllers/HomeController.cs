@@ -11,6 +11,7 @@ using System.Web;
 using System.Net;
 using DataBaseTars;
 using Microsoft.EntityFrameworkCore;
+using RestSharp;
 
 namespace TARSGabrielMoraraRibeiro.Controllers
 {
@@ -23,7 +24,7 @@ namespace TARSGabrielMoraraRibeiro.Controllers
 
         public IActionResult Index()
         {
-            return View("Products/ListProducts");
+            return RedirectToAction("ListProducts", "Products");
         }
 
         public IActionResult Register()
@@ -38,7 +39,7 @@ namespace TARSGabrielMoraraRibeiro.Controllers
 
         public IActionResult Logout()
         {
-            return View("Login");
+            return RedirectToAction("Login", "Home");
         }
 
         public IActionResult Perfil()

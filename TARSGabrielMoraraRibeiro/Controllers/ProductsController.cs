@@ -31,6 +31,7 @@ namespace TARSGabrielMoraraRibeiro.Controllers
             return ValidateUser();
         }
 
+        [HttpPost]
         public JsonResult CreatedProduct(string data)
         {
             try
@@ -48,13 +49,14 @@ namespace TARSGabrielMoraraRibeiro.Controllers
             }
             catch (Exception e)
             {
-                return new JsonResult("Houve um erro interno, já estamos verificando.")
+                return new JsonResult("Houve um erro interno, verifique se todos os campos estao preenchidos.")
                 {
                     StatusCode = (int)HttpStatusCode.InternalServerError
                 };
             }
         }
 
+        [HttpPut]
         public JsonResult UpdateProduct(string productID, string data)
         {
             try
@@ -85,7 +87,7 @@ namespace TARSGabrielMoraraRibeiro.Controllers
                     return Json("OK");
                 }
 
-                return new JsonResult("Requisição mal formada.")
+                return new JsonResult("Requisição mal formatada.")
                 {
                     StatusCode = (int)HttpStatusCode.BadRequest
                 };
@@ -99,6 +101,7 @@ namespace TARSGabrielMoraraRibeiro.Controllers
             }
         }
 
+        [HttpDelete]
         public JsonResult DeleteProduct(string productID)
         {
             try
@@ -106,6 +109,7 @@ namespace TARSGabrielMoraraRibeiro.Controllers
                 var product = rep._context.Products.FirstOrDefault(s => s.ProductID == Convert.ToInt64(productID));
 
                 rep._context.Products.Remove(product);
+                rep._context.SaveChanges();
 
                 return Json("OK");
             }
@@ -118,6 +122,7 @@ namespace TARSGabrielMoraraRibeiro.Controllers
             }
         }
 
+        [HttpGet]
         public JsonResult GetProductByID(string productID)
         {
             try
@@ -134,6 +139,7 @@ namespace TARSGabrielMoraraRibeiro.Controllers
             }
         }
 
+        [HttpGet]
         public JsonResult GetProducts()
         {
             try

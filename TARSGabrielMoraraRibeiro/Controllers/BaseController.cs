@@ -13,16 +13,23 @@ namespace TARSGabrielMoraraRibeiro.Controllers
 
         public ActionResult ValidateUser()
         {
-            var userCPF = HttpContext.Request.Cookies["UserCPF"];
-            var userToken = HttpContext.Request.Cookies["UserToken"];
-
-            var validUser = rep.ValidateUser(userCPF, userToken);
-            if (validUser)
+            try
             {
-                return View();
-            }
+                var userCPF = HttpContext.Request.Cookies["UserCPF"];
+                var userToken = HttpContext.Request.Cookies["UserToken"];
 
-            return View("home/login");
+                var validUser = rep.ValidateUser(userCPF, userToken);
+                if (validUser)
+                {
+                    return View();
+                }
+
+                return View("Home/login");
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Login", "Home");
+            }
         }
     }
 }

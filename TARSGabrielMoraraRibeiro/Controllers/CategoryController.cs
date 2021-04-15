@@ -21,6 +21,7 @@ namespace TARSGabrielMoraraRibeiro.Controllers
             return ValidateUser();
         }
 
+        [HttpGet]
         public JsonResult ListCategorys()
         {
             try
@@ -48,6 +49,7 @@ namespace TARSGabrielMoraraRibeiro.Controllers
             }
         }
 
+        [HttpPost]
         public JsonResult CreatedCategory(string name)
         {
             try
@@ -82,6 +84,7 @@ namespace TARSGabrielMoraraRibeiro.Controllers
             }
         }
 
+        [HttpPut]
         public JsonResult UpdateCategory(string categoryID, string name)
         {
             try
@@ -92,6 +95,8 @@ namespace TARSGabrielMoraraRibeiro.Controllers
                 if (categoryExist == null)
                 {
                     category.Name = name;
+                    category.Updated_at = Common.Commons.HourBrasilia;
+
                     rep._context.SaveChanges();
                     return Json("OK");
                 }
@@ -112,6 +117,7 @@ namespace TARSGabrielMoraraRibeiro.Controllers
             }
         }
 
+        [HttpDelete]
         public JsonResult DeleteCategory(string categoryID)
         {
             try
