@@ -235,6 +235,11 @@
 
 <script type="text/javascript">
 
+    // remove cookies de sessoes anterirores
+    $(document).ready(function () {
+        deleteCookies();
+    });
+
     function ViewModel() {
         try {
 
@@ -253,9 +258,11 @@
                         password: self.password()
                     },
                     success: function (response) {
+
                         setCookie('UserCPF', self.cpf());
                         setCookie('UserToken', response);
-                        window.location.href = '/Products/ListProducts';
+
+                        window.location.href = '/Home/Index';
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         self.errorMsg(JSON.parse(xhr.responseText));
@@ -271,5 +278,9 @@
 
     // ativa knockout.js
     ko.applyBindings(vm);
+
+    function deleteCookies() {
+        document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+    }
 
 </script>
